@@ -470,6 +470,49 @@ function linktoExternal(longName, name) {
   return linkto(longName, name.replace(/(^"|"$)/g, ""));
 }
 
+function buildHeaderItems(items) {
+  let itemsMarkup = "";
+  let subMenuIcon = "";
+  let downArrowIcon = "";
+  let subMenus = "";
+  for (var i in items) {
+    if (items[i].children) {
+      downArrowIcon = '<i class="fa fa-sort-down"></i>';
+      subMenus += '<div class="submenu">';
+      for (var k in items[i].children) {
+        if (items[i].children[k].icon) {
+          subMenuIcon = `<i class="fa ${items[i].children[k].icon}"></i>`;
+        }
+        subMenus += `<a class="header-sub-link" href="${items[i].children[k].href}">${subMenuIcon}${items[i].children[k].name}</a>`;
+      }
+      subMenus += "</div>";
+    }
+    itemsMarkup += `<div class="header-item"><a class="header-link" href="${items[i].href}">${items[i].name}${downArrowIcon}</a>${subMenus}</div>`;
+  }
+  return itemsMarkup;
+}
+
+function buildHeader() {
+  var docdash = (env && env.conf && env.conf.docdash) || {};
+  let leftItems = buildHeaderItems(docdash.header ? docdash.header.left : {});
+  let rightItems = buildHeaderItems(docdash.header ? docdash.header.right : {});
+
+  const header = `
+    <div class="fixed-header">
+      <a class="logo" href="${
+        docdash.header && docdash.header.logo && docdash.header.logo.href
+      }">
+        <img src="${
+          docdash.header && docdash.header.logo && docdash.header.logo.src
+        }" />
+      </a>
+      <div class="left">${leftItems}</div>
+      <div class="right">${rightItems}</div>
+    </div>
+  `;
+  return header;
+}
+
 /**
  * Create the navigation sidebar.
  * @param {object} members The members that will be used to create the sidebar.
@@ -815,6 +858,7 @@ exports.publish = function (taffyData, opts, tutorials) {
 
   // once for all
   view.nav = buildNav(members);
+  view.header = buildHeader();
   attachModuleSymbols(find({ longname: { left: "module:" } }), members.modules);
 
   // generate the pretty-printed source files first so other pages can link to them
