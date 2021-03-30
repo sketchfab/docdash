@@ -509,7 +509,7 @@ function buildHeader() {
       <div class="left">${leftItems}</div>
       <div class="center"><p class="title">${
         (docdash.header && docdash.header.title) || "Documentation"
-      }</p>
+      }</p></div>
       <div class="right">${rightItems}</div>
     </div>
   `;
@@ -639,6 +639,34 @@ exports.publish = function (taffyData, opts, tutorials) {
   helper.setTutorials(tutorials);
 
   data = helper.prune(data);
+
+  var allVersions = [];
+
+  data({ kind: "module" }).each(function (doclet) {
+    allVersions.push(doclet.longname);
+  });
+
+  for (var v = 0; v < allVersions.length; v++) {
+    var nextVersion = allVersions[v + 1];
+    if (nextVersion) {
+      var itemsInVersion = data({ kind: "function", memberof: allVersions[v] });
+      itemsInVersion.each((doclet) => {
+        var itemInNextVersion = data({
+          kind: "function",
+          memberof: allVersions[v + 1],
+          name: doclet.name,
+        });
+        if (!itemInNextVersion.count()) {
+          var newItem = {
+            ...doclet,
+            memberof: nextVersion,
+            longname: doclet.longname.replace(allVersions[v], nextVersion),
+          };
+          data.insert(newItem);
+        }
+      });
+    }
+  }
 
   docdash.sort !== false && data.sort("longname, version, since");
   helper.addEventListeners(data);
