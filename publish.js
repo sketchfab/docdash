@@ -507,6 +507,9 @@ function buildHeader() {
         }" />
       </a>
       <div class="left">${leftItems}</div>
+      <div class="center"><p class="title">${
+        (docdash.header && docdash.header.title) || "Documentation"
+      }</p>
       <div class="right">${rightItems}</div>
     </div>
   `;
