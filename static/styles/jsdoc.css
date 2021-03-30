@@ -369,7 +369,6 @@ nav ul {
 nav ul a,
 nav ul a:active {
   font-family: "Open Sans", sans-serif;
-  padding: 0;
   display: block;
 }
 
@@ -384,7 +383,36 @@ nav > ul {
 
 nav > ul > li > a {
   color: #606;
-  margin-top: 10px;
+  margin: 0;
+  padding: 12px 0;
+}
+
+nav > ul > li.foldable:not(.unfoldable) {
+  padding-left: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+nav > ul > li.foldable:not(.unfoldable):before {
+  content: "►";
+  position: absolute;
+  left: 0;
+  top: 11px;
+  font-size: 10px;
+  color: #aaa;
+  padding-top: 2px;
+}
+
+nav > ul > li.foldable:not(.unfoldable) > ul {
+  display: none;
+}
+
+nav > ul > li.foldable:not(.unfoldable).unfolded > ul {
+  display: block;
+}
+
+nav > ul > li.foldable:not(.unfoldable).unfolded:before {
+  transform: rotate(90deg);
 }
 
 nav ul ul a {

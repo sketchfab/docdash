@@ -375,6 +375,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
 
   if (items && items.length) {
     var itemsNav = "";
+    var foldable = "";
     var docdash = (env && env.conf && env.conf.docdash) || {};
     var level =
       typeof docdash.navLevel === "number" && docdash.navLevel >= 0
@@ -394,6 +395,10 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
       // depth to show?
       if (item.ancestors && item.ancestors.length > level) {
         classes += "level-hide";
+      }
+
+      if (docdash.foldableMenus) {
+        classes += "foldable";
       }
 
       classes = classes ? ' class="' + classes + '"' : "";
@@ -455,7 +460,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     });
 
     if (itemsNav !== "") {
-      nav += "<h3>" + itemHeading + "</h3><ul>" + itemsNav + "</ul>";
+      nav += `<h3>${itemHeading}</h3><ul>${itemsNav}</ul>`;
     }
   }
 
@@ -640,31 +645,34 @@ exports.publish = function (taffyData, opts, tutorials) {
 
   data = helper.prune(data);
 
-  var allVersions = [];
-
-  data({ kind: "module" }).each(function (doclet) {
-    allVersions.push(doclet.longname);
-  });
-
-  for (var v = 0; v < allVersions.length; v++) {
-    var nextVersion = allVersions[v + 1];
-    if (nextVersion) {
-      var itemsInVersion = data({ kind: "function", memberof: allVersions[v] });
-      itemsInVersion.each((doclet) => {
-        var itemInNextVersion = data({
+  if (docdash.sketchfabHeritage) {
+    var allVersions = [];
+    data({ kind: "module" }).each(function (doclet) {
+      allVersions.push(doclet.longname);
+    });
+    for (var v = 0; v < allVersions.length; v++) {
+      var nextVersion = allVersions[v + 1];
+      if (nextVersion) {
+        var itemsInVersion = data({
           kind: "function",
-          memberof: allVersions[v + 1],
-          name: doclet.name,
+          memberof: allVersions[v],
         });
-        if (!itemInNextVersion.count()) {
-          var newItem = {
-            ...doclet,
-            memberof: nextVersion,
-            longname: doclet.longname.replace(allVersions[v], nextVersion),
-          };
-          data.insert(newItem);
-        }
-      });
+        itemsInVersion.each((doclet) => {
+          var itemInNextVersion = data({
+            kind: "function",
+            memberof: allVersions[v + 1],
+            name: doclet.name,
+          });
+          if (!itemInNextVersion.count()) {
+            var newItem = {
+              ...doclet,
+              memberof: nextVersion,
+              longname: doclet.longname.replace(allVersions[v], nextVersion),
+            };
+            data.insert(newItem);
+          }
+        });
+      }
     }
   }
 
