@@ -74,13 +74,22 @@ nav, #main {
 }
 
 .fixed-header .left {
-  flex: 1;
+  flex: 1 0 auto;
   display: flex;
   margin-left: 20px;
 }
 
 .fixed-header .right {
   margin-right: 20px;
+  flex: 1 0 auto;
+  text-align: right;
+}
+
+.fixed-header .center {
+  flex: 10;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .submenu {
