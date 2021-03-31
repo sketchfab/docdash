@@ -3,8 +3,10 @@ function initializeFoldableMenus() {
   for (var f in foldables) {
     if (foldables.hasOwnProperty(f)) {
       foldables[f].addEventListener("click", (e) => {
-        e.currentTarget.classList.toggle("unfolded");
-        e.preventDefault();
+        if (e.target.parentElement.dataset.type !== "method") {
+          e.currentTarget.classList.toggle("unfolded");
+          e.preventDefault();
+        }
       });
     }
   }

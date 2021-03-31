@@ -8,7 +8,9 @@
         <h2>Constructor</h2>
         <?js } ?>
 
-        <h4 class="name" id="<?js= id ?>"><?js= data.attribs ?><?js
+        <h4 class="name" id="<?js= id ?>">
+        <?js= self.linkto(data.longname, ' ', 'fa fa-link') ?>
+        <?js= data.attribs ?><?js
         if(kind === 'class' && name.indexOf('module:') === 0) {
             print('new (require("' + name.slice(7) + '"))');
         } else if(kind === 'class') {

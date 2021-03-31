@@ -212,11 +212,17 @@ h4.name {
 }
 
 h4.name a {
-  color: #fc83ff;
+  color: #ccc;
+  font-size: 16px;
+  border-bottom: none;
+  margin-left: -40px;
+  visibility: hidden;
+  padding: 5px 10px;
+  margin-right: -10px;
 }
 
-h4.name a:hover {
-  border-bottom-color: #fc83ff;
+h4.name:hover a {
+  visibility: visible;
 }
 
 h5, .container-overview .subsection-title {
