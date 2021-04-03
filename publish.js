@@ -394,11 +394,12 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
 
       // depth to show?
       if (item.ancestors && item.ancestors.length > level) {
-        classes += "level-hide";
+        classes += "level-hide ";
       }
 
       if (docdash.foldableMenus) {
-        classes += "foldable";
+        classes += "foldable ";
+        classes += item.name.replace(/\./gi, "_");
       }
 
       classes = classes ? ' class="' + classes + '"' : "";
@@ -444,7 +445,8 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
             if (docdash.private === false && method.access === "private")
               return;
 
-            itemsNav += "<li data-type='method'";
+            itemsNav +=
+              "<li data-type='method' data-method='" + method.name + "'";
             if (docdash.collapse) itemsNav += " style='display: none;'";
             itemsNav += ">";
             itemsNav += linkto(method.longname, method.name);

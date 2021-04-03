@@ -381,6 +381,10 @@ nav ul {
   list-style-type: none;
 }
 
+nav ul li.highlighted {
+  background: #ffffff;
+}
+
 nav ul a,
 nav ul a:active {
   font-family: "Open Sans", sans-serif;
@@ -400,6 +404,10 @@ nav > ul > li > a {
   color: #606;
   margin: 0;
   padding: 12px 0;
+}
+
+nav > ul > li.hidden {
+  display: none!important;
 }
 
 nav > ul > li.foldable:not(.unfoldable) {
@@ -828,6 +836,17 @@ html[data-search-mode] .level-hide {
     display: block;
 }
 
+.container-overview {
+  margin: 0 -30px 90px -30px;
+  padding: 0 30px 60px 30px;
+  background: #f4f4f4;
+  border-bottom: 1px solid #cbcbcb;
+  border-top: 1px solid #cbcbcb;
+}
+
+.container-overview .vapi-section {
+  display: none;
+}
 
 @media only screen and (max-width: 680px) {
   body {

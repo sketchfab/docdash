@@ -1,8 +1,8 @@
-<div class="vapi-section">
-    <?js
-    var data = obj;
-    var self = this;
-    ?>
+<?js
+var data = obj;
+var self = this;
+?>
+<div class="vapi-section <?js= data.name ?>">
     <?js if (data.kind !== 'module' && !data.hideconstructor) { ?>
         <?js if (data.kind === 'class' && data.classdesc) { ?>
         <h2>Constructor</h2>

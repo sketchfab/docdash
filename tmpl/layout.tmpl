@@ -25,6 +25,11 @@
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script type="text/javascript">
+        window.currentVersion = document.location.href.match(/v\d\d?\.\d\d?\.\d\d?/gi);
+        window.currentVersionClass = currentVersion && currentVersion[0].replace(/\./gi, '_');
+        window.initialSearch = new URLSearchParams(document.location.search).get('q');
+    </script>
     <script src="scripts/nav.js" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?js if (env.conf.docdash.scripts && env.conf.docdash.scripts.length) {
