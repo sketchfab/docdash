@@ -840,11 +840,7 @@ html[data-search-mode] .level-hide {
 .container-overview {
   margin: 0 -30px 90px -30px;
   padding: 0 30px 60px 30px;
-<<<<<<< HEAD
-  background: #f4f4f4;
-=======
   background: #F7F9FA;
->>>>>>> 0a0d676 (Updates some colors according to UI recommandations)
   border-bottom: 1px solid #cbcbcb;
   border-top: 1px solid #cbcbcb;
 }
