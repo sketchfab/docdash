@@ -388,7 +388,6 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
       var members = find({ kind: "member", memberof: item.longname });
       var conf = (env && env.conf) || {};
       var classes = "";
-
       // show private class?
       if (docdash.private === false && item.access === "private") return;
 
@@ -440,18 +439,42 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         if (methods.length) {
           itemsNav += "<ul class='methods'>";
 
-          methods.forEach(function (method) {
+          var renderMethod = function (method) {
             if (docdash.static === false && method.scope === "static") return;
             if (docdash.private === false && method.access === "private")
               return;
-
             itemsNav +=
               "<li data-type='method' data-method='" + method.name + "'";
             if (docdash.collapse) itemsNav += " style='display: none;'";
             itemsNav += ">";
             itemsNav += linkto(method.longname, method.name);
             itemsNav += "</li>";
-          });
+          };
+
+          if (docdash.sketchfabCategories) {
+            var defaultCategory = "General";
+            var ordered = methods.reduce((acc, method) => {
+              var cat = method.tags
+                ? method.tags.find((v) => v.title === "category")
+                  ? method.tags.find((v) => v.title === "category").value
+                  : defaultCategory
+                : defaultCategory;
+              if (!acc[cat]) {
+                acc[cat] = [];
+              }
+              acc[cat].push(method);
+              return acc;
+            }, {});
+            var renderCategory = function (catName) {
+              itemsNav += `<li class="category-name">${catName}</li>`;
+              ordered[catName].forEach(renderMethod);
+            };
+            renderCategory(defaultCategory);
+            delete ordered[defaultCategory];
+            Object.keys(ordered).forEach(renderCategory);
+          } else {
+            methods.forEach(renderMethod);
+          }
 
           itemsNav += "</ul>";
         }
