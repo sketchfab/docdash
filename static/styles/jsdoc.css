@@ -205,7 +205,7 @@ h4 {
 
 h4.name {
   color: rgb(104 104 104);
-  background: #f4f4f4;
+  background: #F7F9FA;
   border: 1px dashed rgb(158, 158, 158);
   margin: 1.5em 0 0.5em;
   padding: .75em 0 .75em 10px;
@@ -285,7 +285,7 @@ h6 {
 
 tt, code, kbd, samp {
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
-  background: #f4f4f4;
+  background: #F7F9FA;
   padding: 1px 5px;
 }
 
@@ -424,6 +424,7 @@ nav > ul > li.foldable:not(.unfoldable):before {
   font-size: 10px;
   color: #aaa;
   padding-top: 2px;
+  pointer-events: none;
 }
 
 nav > ul > li.foldable:not(.unfoldable) > ul {
@@ -839,7 +840,11 @@ html[data-search-mode] .level-hide {
 .container-overview {
   margin: 0 -30px 90px -30px;
   padding: 0 30px 60px 30px;
+<<<<<<< HEAD
   background: #f4f4f4;
+=======
+  background: #F7F9FA;
+>>>>>>> 0a0d676 (Updates some colors according to UI recommandations)
   border-bottom: 1px solid #cbcbcb;
   border-top: 1px solid #cbcbcb;
 }
