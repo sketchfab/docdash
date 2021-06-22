@@ -474,7 +474,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
             };
             renderCategory(defaultCategory);
             delete ordered[defaultCategory];
-            Object.keys(ordered).forEach(renderCategory);
+            Object.keys(ordered).sort().forEach(renderCategory);
           } else {
             methods.forEach(renderMethod);
           }
@@ -678,6 +678,13 @@ exports.publish = function (taffyData, opts, tutorials) {
     data({ kind: "module" }).each(function (doclet) {
       allVersions.push(doclet.longname);
     });
+    // Sort with proper semver
+    allVersions.sort((a, b) => {
+      var cleanA = semver.valid(semver.coerce(a));
+      var cleanB = semver.valid(semver.coerce(b));
+      return semver.lt(cleanA, cleanB) ? -1 : 1;
+    });
+
     for (var v = 0; v < allVersions.length; v++) {
       var nextVersion = allVersions[v + 1];
       if (nextVersion) {
@@ -909,7 +916,11 @@ exports.publish = function (taffyData, opts, tutorials) {
   for (var i in members.modules) {
     members.modules[i].name = members.modules[i].name.replace(/"/g, "");
   }
-  members.modules = members.modules.reverse();
+  members.modules.sort((a, b) => {
+    var cleanA = semver.valid(semver.coerce(a.longname));
+    var cleanB = semver.valid(semver.coerce(b.longname));
+    return semver.gt(cleanA, cleanB) ? -1 : 1;
+  });
 
   // output pretty-printed source files by default
   var outputSourceFiles =

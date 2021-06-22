@@ -153,9 +153,47 @@
     <?js
         var methods = self.find({kind: 'function', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
         if (methods && methods.length && methods.forEach) {
+            var defaultCategory = "General";
+            var ordered = methods.reduce((acc, method) => {
+              var cat = method.tags
+                ? method.tags.find((v) => v.title === "category")
+                  ? method.tags.find((v) => v.title === "category").value
+                  : defaultCategory
+                : defaultCategory;
+              if (!acc[cat]) {
+                acc[cat] = [];
+              }
+              acc[cat].push(method);
+              return acc;
+            }, {});
+            var categories = Object.keys(ordered).sort();
+            methods = methods.reverse();
+            methods.sort((a, b) => {
+                if (!a.tags || !a.tags.length) {
+                    return -1;
+                }
+                if (!b.tags || !a.tags.length) {
+                    return 1
+                }
+                var tagA = a.tags
+                ? a.tags.find((v) => v.title === "category")
+                  ? a.tags.find((v) => v.title === "category").value
+                  : defaultCategory
+                : defaultCategory;
+                var tagB = b.tags
+                ? b.tags.find((v) => v.title === "category")
+                  ? b.tags.find((v) => v.title === "category").value
+                  : defaultCategory
+                : defaultCategory;
+
+                if (categories.indexOf(tagA) > categories.indexOf(tagB)) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            })
     ?>
         <h3 class="subsection-title">Methods</h3>
-
         <?js methods.forEach(function(m) { ?>
             <?js= self.partial('method.tmpl', m) ?>
         <?js }); ?>
