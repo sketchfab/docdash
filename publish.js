@@ -466,8 +466,10 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
               return acc;
             }, {});
             var renderCategory = function (catName) {
-              itemsNav += `<li class="category-name">${catName}</li>`;
-              ordered[catName].forEach(renderMethod);
+              if (ordered[catName] && ordered[catName].length) {
+                itemsNav += `<li class="category-name">${catName}</li>`;
+                ordered[catName].forEach(renderMethod);
+              }
             };
             renderCategory(defaultCategory);
             delete ordered[defaultCategory];
